@@ -1,2 +1,5 @@
-db_utils.py
+# Ignore SQLite database file
 billing_system.db
+
+# Ignore dub_utils.py
+dub_utils.py

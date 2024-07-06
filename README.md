@@ -1,40 +1,41 @@
-# Billing System
+# 🧾 Billing System Terminal Based
 
-## Overview
+## 📋 Overview
 
-This billing system is a terminal-based application designed to manage users, products, transactions, and inventory. It includes role-based access control, with different functionalities available to regular users and admins. The system is built using Python and SQLite for database management.
+Welcome to the **Billing System**! This terminal-based application is designed to efficiently manage users, products, transactions, and inventory. It includes role-based access control, ensuring that regular users and admins have access to appropriate functionalities. Built using Python and SQLite, this system is both robust and easy to use.
 
-## Features
+## ✨ Features
 
 ### For Users:
 
-1. **View Profile**: Users can view their profile information.
-2. **View Products**: Users can view the list of available products.
-3. **Generate Bill**: Users can generate bills for purchased products.
-4. **View Transactions**: Users can view their transaction history.
-5. **Logout**: Users can log out of the system.
+1. **👤 View Profile**: Access your personal profile information.
+2. **🛍️ View Products**: Browse the list of available products.
+3. **🧾 Generate Bill**: Create bills for your purchases.
+4. **📄 View Transactions**: Review your transaction history.
+5. **🚪 Logout**: Securely log out of the system.
 
 ### For Admins:
 
-1. **View Profile**: Admins can view their profile information.
-2. **View Products**: Admins can view the list of available products.
-3. **Generate Bill**: Admins can generate bills for purchased products.
-4. **View Transactions**: Admins can view their transaction history.
-5. **Logout**: Admins can log out of the system.
-6. **View Users**: Admins can view the list of all users.
-7. **Add Product**: Admins can add new products to the inventory.
-8. **Update Product**: Admins can update existing product details.
-9. **Delete Product**: Admins can delete products from the inventory.
-10. **View All Transactions**: Admins can view all user transactions.
-11. **Inventory Notification**: Admins receive notifications about low inventory.
-12. **Generate Sales Report**: Admins can generate sales reports.
-13. **Generate User Activity Report**: Admins can generate user activity reports.
-14. **Generate Inventory Report**: Admins can generate inventory reports.
-15. **Search and Filter Products**: Admins can search and filter products.
-16. **Search and Filter Transactions**: Admins can search and filter transactions.
+1. **👤 View Profile**: Access your personal profile information.
+2. **🛍️ View Products**: Browse the list of available products.
+3. **🧾 Generate Bill**: Create bills for purchases.
+4. **📄 View Transactions**: Review your transaction history.
+5. **🚪 Logout**: Securely log out of the system.
+6. **👥 View Users**: See the list of all users.
+7. **➕ Add Product**: Add new products to the inventory.
+8. **✏️ Update Product**: Update details of existing products.
+9. **❌ Delete Product**: Remove products from the inventory.
+10. **🔍 View All Transactions**: View all user transactions.
+11. **🔔 Inventory Notification**: Get alerts for low inventory.
+12. **📊 Generate Sales Report**: Generate reports on sales.
+13. **📝 Generate User Activity Report**: Generate reports on user activities.
+14. **📦 Generate Inventory Report**: Generate reports on inventory status.
+15. **🔎 Search and Filter Products**: Search and filter the product list.
+16. **🔍 Search and Filter Transactions**: Search and filter transactions.
 
-## Directory Structure
+## 🗂️ Directory Structure
 
+```plaintext
 billing_system/
 │
 ├── main.py
@@ -45,8 +46,9 @@ billing_system/
 ├── report.py
 ├── inventory.py
 └── search_filter.py
+```
 
-## Installation
+## ⚙️ Installation
 
 1. **Clone the repository:**
 
@@ -95,7 +97,7 @@ billing_system/
    );
    ```
 
-## Usage
+## 🚀 Usage
 
 1. **Run the application:**
 
@@ -109,7 +111,7 @@ billing_system/
 3. **User Menu:**
    Based on your role (user or admin), you will be presented with a menu of options.
 
-## Code Explanation
+## 🛠️ Code Explanation
 
 ### main.py
 
@@ -143,10 +145,12 @@ Handles inventory-related functionalities, including inventory notifications and
 
 Provides search and filter functionalities for products and transactions.
 
-## License
+## .
+
+📜 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 - This project utilizes the [tabulate](https://pypi.org/project/tabulate/) library for displaying data in tabular format.
