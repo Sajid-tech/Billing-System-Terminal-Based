@@ -1,5 +1,6 @@
 # billing_system/user.py
-import sqlite3
+
+import mysql.connector as mysql
 from tabulate import tabulate
 from product import view_products, add_product , update_product, delete_product
 from report import generate_sales_report, generate_user_activity_report
@@ -10,9 +11,15 @@ from transaction import generate_bill,view_transactions, view_all_transactions
 
 # View profile function
 def view_profile(user_id):
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
-    c.execute("SELECT username, name, address, age FROM users WHERE id = ?", (user_id,))
+    c.execute("SELECT username, name, address, age FROM users WHERE id = %s", (user_id,))
     user = c.fetchone()
     if user:
         print(f"\n--- Profile ---\nUsername: {user[0]}\nName: {user[1]}\nAddress: {user[2]}\nAge: {user[3]}")
@@ -22,20 +29,22 @@ def view_profile(user_id):
 
 
 def view_users():
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
-    c.execute("SELECT id, username, name, address, age, role FROM users")
+    c.execute("SELECT id, username, name, address, age FROM users")
     users = c.fetchall()
-    conn.close()
-    
     if users:
-        print("\n--- All Users ---")
-        
         print("\n--- Users ---")
-        print(tabulate(users, headers=["User ID", "Username", "Name", "Address", "Age","Role" ]))
+        print(tabulate(users, headers=["User ID", "Username", "Name", "Address", "Age"]))
     else:
         print("No users found.")
-
+    conn.close()
 
 
 
@@ -84,5 +93,4 @@ def user_menu(user_id, user_role):
             search_filter_transactions()
         else:
             print("Invalid choice. Please try again.")
-
 

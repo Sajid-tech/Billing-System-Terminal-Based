@@ -1,5 +1,6 @@
 # billing_system/search_filter.py
 import sqlite3
+import mysql.connector as mysql
 from tabulate import tabulate
 
 # Search and filter products function for admin
@@ -13,18 +14,24 @@ def search_filter_products():
     params = []
     
     if search_term:
-        query += " AND (name LIKE ? OR description LIKE ? OR category LIKE ?)"
+        query += " AND (name LIKE %s OR description LIKE %s OR category LIKE %s)"
         params.extend([f"%{search_term}%", f"%{search_term}%", f"%{search_term}%"])
     
     if min_price:
-        query += " AND price >= ?"
+        query += " AND price >= %s"
         params.append(float(min_price))
     
     if max_price:
-        query += " AND price <= ?"
+        query += " AND price <= %s"
         params.append(float(max_price))
     
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     c.execute(query, params)
     products = c.fetchall()
@@ -55,22 +62,28 @@ def search_filter_transactions():
     params = []
     
     if username:
-        query += " AND users.username LIKE ?"
+        query += " AND users.username LIKE %s"
         params.append(f"%{username}%")
     
     if product_name:
-        query += " AND products.name LIKE ?"
+        query += " AND products.name LIKE %s"
         params.append(f"%{product_name}%")
     
     if start_date:
-        query += " AND date(transactions.date) >= ?"
+        query += " AND date(transactions.date) >= %s"
         params.append(start_date)
     
     if end_date:
-        query += " AND date(transactions.date) <= ?"
+        query += " AND date(transactions.date) <= %s"
         params.append(end_date)
     
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     c.execute(query, params)
     transactions = c.fetchall()

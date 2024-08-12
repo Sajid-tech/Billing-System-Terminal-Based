@@ -1,11 +1,18 @@
 # billing_system/report.py
 import sqlite3
+import mysql.connector as mysql
 from tabulate import tabulate
 
 
 # Generate sales report function for admin
 def generate_sales_report():
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     c.execute('''SELECT products.name, SUM(transactions.quantity) AS total_quantity_sold, 
                  SUM(products.price * transactions.quantity) AS total_sales
@@ -23,7 +30,13 @@ def generate_sales_report():
 
 # Generate user activity report function for admin
 def generate_user_activity_report():
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     c.execute('''SELECT users.username, COUNT(transactions.id) AS total_transactions, 
                  SUM(products.price * transactions.quantity) AS total_spent

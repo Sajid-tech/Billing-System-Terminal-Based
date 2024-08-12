@@ -1,7 +1,7 @@
 # billing_system/auth.py
-import sqlite3
 from hashlib import sha256
 from user import user_menu
+import mysql.connector as mysql
 
 def hash_password(password):
     return sha256(password.encode()).hexdigest()
@@ -35,18 +35,26 @@ def signup():
     age = input("Enter your age: ")
     role = input("Enter role (user/admin): ")
 
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     hashed_password = hash_password(password)
     try:
-        c.execute("INSERT INTO users (username, password, name, address, age, role) VALUES (?, ?, ?, ?, ?, ?)", 
+        c.execute("INSERT INTO users (username, password, name, address, age, role) VALUES (%s, %s, %s, %s, %s, %s)", 
                   (username, hashed_password, name, address, age, role))
         conn.commit()
         print("Signup successful! Please proceed to login.")
         login()
-    except sqlite3.IntegrityError:
-        print("Username already exists. Please try a different one.")
-    conn.close()
+    except mysql.Error as e:
+        print(f"Error: {e}")
+    finally:
+        conn.close()
+
 
 
 # Login function
@@ -55,9 +63,15 @@ def login():
     username = input("Enter username: ")
     password = input("Enter password: ")
     
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database='billing_system'
+    )
     c = conn.cursor()
-    c.execute("SELECT id, password, role FROM users WHERE username = ?", (username,))
+    c.execute("SELECT id, password, role FROM users WHERE username = %s", (username,))
     user = c.fetchone()
     if user and user[1] == hash_password(password):
         print("Login successful!")
@@ -67,5 +81,3 @@ def login():
     else:
         print("Invalid username or password. Please try again.")
     conn.close()
-
-

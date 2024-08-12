@@ -1,10 +1,17 @@
 # billing_system/product.py
 import sqlite3
+import mysql.connector as mysql
 from tabulate import tabulate
 
 # View products function
 def view_products(user_id):
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     c.execute("SELECT id, name, price, description, category, quantity FROM products")
     products = c.fetchall()
@@ -15,8 +22,6 @@ def view_products(user_id):
         print("No products found.")
     conn.close()
 
-
-
 # Add product function
 def add_product():
     print("\n--- Add Product ---")
@@ -26,18 +31,23 @@ def add_product():
     category = input("Enter product category: ")
     quantity = int(input("Enter product quantity: "))
     
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     try:
-        c.execute("INSERT INTO products (name, price, description, category, quantity) VALUES (?, ?, ?, ?, ?)", 
+        c.execute("INSERT INTO products (name, price, description, category, quantity) VALUES (%s, %s, %s, %s, %s)", 
                   (name, price, description, category, quantity))
         conn.commit()
         print("Product added successfully!")
-    except sqlite3.IntegrityError:
-        print("Product already exists.")
-    conn.close()
-
-
+    except mysql.Error as e:
+        print(f"Error: {e}")
+    finally:
+        conn.close()
 
 # Update product function
 def update_product():
@@ -49,28 +59,42 @@ def update_product():
     new_category = input("Enter new product category: ")
     new_quantity = int(input("Enter new product quantity: "))
     
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     try:
-        c.execute("UPDATE products SET name = ?, price = ?, description = ?, category = ?, quantity = ? WHERE id = ?", 
+        c.execute("UPDATE products SET name = %s, price = %s, description = %s, category = %s, quantity = %s WHERE id = %s", 
                   (new_name, new_price, new_description, new_category, new_quantity, product_id))
         conn.commit()
         print("Product updated successfully!")
-    except sqlite3.Error:
-        print("Failed to update product.")
-    conn.close()
+    except mysql.Error as e:
+        print(f"Error: {e}")
+    finally:
+        conn.close()
 
 # Delete product function
 def delete_product():
     print("\n--- Delete Product ---")
     product_id = int(input("Enter product ID to delete: "))
     
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
     try:
-        c.execute("DELETE FROM products WHERE id = ?", (product_id,))
+        c.execute("DELETE FROM products WHERE id = %s", (product_id,))
         conn.commit()
         print("Product deleted successfully!")
-    except sqlite3.Error:
-        print("Failed to delete product.")
-    conn.close()
+    except mysql.Error as e:
+        print(f"Error: {e}")
+    finally:
+        conn.close()

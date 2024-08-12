@@ -1,35 +1,47 @@
 # billing_system/db_utils.py
-import sqlite3
+import mysql.connector as mysql
 
 
 
 # Initialize the SQLite database
 def init_db():
-    conn = sqlite3.connect('billing_system.db')
+    conn = mysql.connect(
+        host="localhost",
+        port="3306",
+        username="root",
+        password="",
+        database ='billing_system'
+    )
     c = conn.cursor()
+    # Create the database if it doesn't exist
+    c.execute("CREATE DATABASE IF NOT EXISTS billing_system")
+
+
+    
+
     c.execute('''CREATE TABLE IF NOT EXISTS users (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    username TEXT UNIQUE,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    username VARCHAR(255) UNIQUE,
                     password TEXT,
                     name TEXT,
                     address TEXT,
-                    age INTEGER,
+                    age INT,
                     role TEXT DEFAULT 'user'
                 )''')
     c.execute('''CREATE TABLE IF NOT EXISTS products (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT UNIQUE,
-                    price REAL,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    name VARCHAR(255) UNIQUE,
+                    price FLOAT,
                     description TEXT,
                     category TEXT,
-                    quantity INTEGER DEFAULT 0
+                    quantity INT DEFAULT 0
                 )''')
     c.execute('''CREATE TABLE IF NOT EXISTS transactions (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    user_id INTEGER,
-                    product_id INTEGER,
-                    quantity INTEGER,
-                    date TEXT,
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    user_id INT,
+                    product_id INT,
+                    quantity INT,
+                    date DATETIME,
                     FOREIGN KEY(user_id) REFERENCES users(id),
                     FOREIGN KEY(product_id) REFERENCES products(id)
                 )''')
