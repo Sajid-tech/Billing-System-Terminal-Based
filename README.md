@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-Welcome to the **Billing System**! This terminal-based application is designed to efficiently manage users, products, transactions, and inventory. It includes role-based access control, ensuring that regular users and admins have access to appropriate functionalities. Built using Python and SQLite, this system is both robust and easy to use.
+Welcome to the **Billing System**! This terminal-based application is designed to efficiently manage users, products, transactions, and inventory. It includes role-based access control, ensuring that regular users and admins have access to appropriate functionalities. Built using Python and MySQL, this system is both robust and easy to use.
 
 ## ✨ Features
 
@@ -60,50 +60,56 @@ billing_system/
 2. **Install dependencies:**
 
    ```bash
-   pip install tabulate
+   pip install tabulate mysql-connector-python
    ```
 
 3. **Set up the database:**
-   Create a SQLite database named `billing_system.db` and create the required tables using the following SQL commands:
+   Create a MySQL database named billing_system and create the required tables using the following SQL commands:
 
    ```sql
-   CREATE TABLE users (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       username TEXT NOT NULL,
-       password TEXT NOT NULL,
-       name TEXT,
-       address TEXT,
-       age INTEGER,
-       role TEXT NOT NULL
+   CREATE DATABASE IF NOT EXISTS billing_system;
+
+   USE billing_system;
+
+   CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE,
+    password TEXT,
+    name TEXT,
+    address TEXT,
+    age INT,
+    role TEXT DEFAULT 'user'
    );
 
-   CREATE TABLE products (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       name TEXT NOT NULL,
-       price REAL NOT NULL,
-       description TEXT,
-       category TEXT,
-       quantity INTEGER NOT NULL
+
+   CREATE TABLE IF NOT EXISTS products (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   name VARCHAR(255) UNIQUE,
+   price FLOAT,
+   description TEXT,
+   category TEXT,
+   quantity INT DEFAULT 0
    );
 
-   CREATE TABLE transactions (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       user_id INTEGER NOT NULL,
-       product_id INTEGER NOT NULL,
-       quantity INTEGER NOT NULL,
-       total_price REAL NOT NULL,
-       FOREIGN KEY (user_id) REFERENCES users (id),
-       FOREIGN KEY (product_id) REFERENCES products (id)
+   CREATE TABLE IF NOT EXISTS transactions (
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   user_id INT,
+   product_id INT,
+   quantity INT,
+   date DATETIME,
+   FOREIGN KEY(user_id) REFERENCES users(id),
+   FOREIGN KEY(product_id) REFERENCES products(id)
    );
+
    ```
 
 ## 🚀 Usage
 
 1. **Run the application:**
 
-   ```bash
-   python main.py
-   ```
+```bash
+python main.py
+```
 
 2. **Login or Register:**
    Upon running the application, you will be prompted to login or register as a new user.
@@ -139,7 +145,7 @@ Generates various reports, such as sales reports and user activity reports.
 
 ### inventory.py
 
-Handles inventory-related functionalities, including inventory notifications and generating inventory reports.
+Handles inventory-related functionalities, including inventory notifications and generating inventory reports. It includes an SMTP integration to automatically send email notifications when product stock falls below or equals 5.
 
 ### search_filter.py
 
